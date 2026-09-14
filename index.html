@@ -1,10 +1,1679 @@
 <!doctype html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <meta name="theme-color" content="#08080d">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <meta name="apple-mobile-web-app-title" content="MindForge AI">
+
 <link rel="manifest" href="manifest.json">
+
 <title>MindForge AI</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+  margin:0;
+
+  background:#08080d;
+
+  color:#f7f7fb;
+
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
+
+}
+
+button,input,textarea{
+
+  font:inherit;
+
+}
+
+button{
+
+  cursor:pointer;
+
+}
+
+.app{
+
+  max-width:650px;
+
+  margin:auto;
+
+  min-height:100vh;
+
+  padding:
+
+    env(safe-area-inset-top)
+
+    16px
+
+    calc(100px + env(safe-area-inset-bottom));
+
+}
+
+.top{
+
+  padding:22px 4px 12px;
+
+}
+
+.brand{
+
+  font-size:11px;
+
+  letter-spacing:4px;
+
+  font-weight:800;
+
+  opacity:.6;
+
+}
+
+.hero{
+
+  font-size:34px;
+
+  font-weight:850;
+
+  line-height:1.05;
+
+  margin:10px 0;
+
+}
+
+.muted{
+
+  opacity:.65;
+
+}
+
+.card{
+
+  background:#12121a;
+
+  border:1px solid #292938;
+
+  border-radius:20px;
+
+  padding:16px;
+
+  margin:12px 0;
+
+}
+
+.row{
+
+  display:flex;
+
+  gap:9px;
+
+  align-items:center;
+
+}
+
+.row>*{
+
+  flex:1;
+
+}
+
+.field{
+
+  width:100%;
+
+  background:#0d0d14;
+
+  color:#fff;
+
+  border:1px solid #303040;
+
+  border-radius:14px;
+
+  padding:13px;
+
+  margin:5px 0;
+
+  outline:0;
+
+}
+
+.field:focus{
+
+  border-color:#635bff;
+
+}
+
+textarea{
+
+  resize:vertical;
+
+}
+
+.btn{
+
+  padding:13px 14px;
+
+  border-radius:14px;
+
+  background:#292938;
+
+  color:#fff;
+
+  font-weight:750;
+
+  border:0;
+
+}
+
+.btn:active{
+
+  transform:scale(.98);
+
+}
+
+.primary{
+
+  background:#fff;
+
+  color:#111;
+
+}
+
+.accent{
+
+  background:#635bff;
+
+}
+
+.view{
+
+  display:none;
+
+}
+
+.view.active{
+
+  display:block;
+
+}
+
+.chat{
+
+  min-height:55vh;
+
+  padding-bottom:10px;
+
+}
+
+.msg{
+
+  max-width:88%;
+
+  padding:12px 14px;
+
+  border-radius:18px;
+
+  margin:9px 0;
+
+  line-height:1.4;
+
+  white-space:pre-wrap;
+
+  overflow-wrap:anywhere;
+
+}
+
+.ai{
+
+  background:#191923;
+
+  border:1px solid #292938;
+
+}
+
+.me{
+
+  background:#4f46e5;
+
+  margin-left:auto;
+
+}
+
+.composer{
+
+  position:sticky;
+
+  bottom:72px;
+
+  background:#08080dee;
+
+  padding:8px 0;
+
+  backdrop-filter:blur(12px);
+
+  z-index:4;
+
+}
+
+.tabs{
+
+  position:fixed;
+
+  bottom:0;
+
+  left:0;
+
+  right:0;
+
+  display:flex;
+
+  justify-content:center;
+
+  background:#0c0c13ee;
+
+  border-top:1px solid #292938;
+
+  padding:
+
+    8px 6px
+
+    calc(8px + env(safe-area-inset-bottom));
+
+  z-index:10;
+
+  backdrop-filter:blur(15px);
+
+}
+
+.tab{
+
+  background:transparent;
+
+  color:#999;
+
+  border:0;
+
+  font-size:11px;
+
+  min-width:68px;
+
+  padding:7px 4px;
+
+}
+
+.tab.active{
+
+  color:#fff;
+
+}
+
+.avatar{
+
+  width:48px;
+
+  height:48px;
+
+  border-radius:15px;
+
+  display:grid;
+
+  place-items:center;
+
+  background:#5147d9;
+
+  font-size:23px;
+
+  flex-shrink:0;
+
+}
+
+.char{
+
+  display:flex;
+
+  gap:12px;
+
+  align-items:center;
+
+}
+
+.media{
+
+  min-height:180px;
+
+  border:1px dashed #3b3b4e;
+
+  border-radius:18px;
+
+  display:grid;
+
+  place-items:center;
+
+  text-align:center;
+
+  padding:20px;
+
+  overflow:hidden;
+
+}
+
+.media img,
+
+.media video{
+
+  max-width:100%;
+
+  border-radius:16px;
+
+}
+
+.small{
+
+  font-size:11px;
+
+  letter-spacing:1px;
+
+  font-weight:800;
+
+  opacity:.6;
+
+}
+
+.listitem{
+
+  padding:13px 0;
+
+  border-bottom:1px solid #292938;
+
+}
+
+.listitem:last-child{
+
+  border-bottom:0;
+
+}
+
+.status{
+
+  padding:10px;
+
+  border-radius:12px;
+
+  background:#191923;
+
+  margin-top:10px;
+
+  font-size:13px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- CHAT -->
+
+<section id="chat" class="view active">
+
+<div class="top">
+
+<div class="brand">MINDFORGE AI</div>
+
+<div class="hero">
+
+Talk to anyone.<br>
+
+Build anything.
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="char">
+
+<div class="avatar" id="avatar">🤖</div>
+
+<div style="flex:1;min-width:0">
+
+<b id="charName">Nova</b>
+
+<div class="muted" id="charDesc">
+
+Custom AI companion
+
+</div>
+
+</div>
+
+<button
+
+class="btn"
+
+onclick="go('characters')">
+
+Change
+
+</button>
+
+</div>
+
+</div>
+
+<div id="messages" class="chat"></div>
+
+<div class="composer">
+
+<textarea
+
+id="input"
+
+class="field"
+
+rows="2"
+
+placeholder="Message your character..."
+
+></textarea>
+
+<div class="row">
+
+<button
+
+class="btn primary"
+
+onclick="send()">
+
+Send
+
+</button>
+
+<button
+
+class="btn"
+
+onclick="go('media')">
+
+✨ Media
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CHARACTERS -->
+
+<section id="characters" class="view">
+
+<div class="top">
+
+<div class="brand">CHARACTERS</div>
+
+<div class="hero">
+
+Create your AI.
+
+</div>
+
+</div>
+
+<div class="card">
+
+<input
+
+id="cname"
+
+class="field"
+
+placeholder="Character name"
+
+>
+
+<input
+
+id="cavatar"
+
+class="field"
+
+placeholder="Avatar emoji 🤖"
+
+>
+
+<textarea
+
+id="cpersonality"
+
+class="field"
+
+rows="5"
+
+placeholder="Personality, backstory, speaking style..."
+
+></textarea>
+
+<button
+
+class="btn primary"
+
+style="width:100%"
+
+onclick="createCharacter()">
+
+Create character
+
+</button>
+
+</div>
+
+<div
+
+id="charList"
+
+class="card">
+
+</div>
+
+</section>
+
+<!-- MEMORY -->
+
+<section id="memory" class="view">
+
+<div class="top">
+
+<div class="brand">MEMORY</div>
+
+<div class="hero">
+
+Character memory.
+
+</div>
+
+</div>
+
+<div class="card">
+
+<textarea
+
+id="memoryInput"
+
+class="field"
+
+rows="5"
+
+placeholder="Something this character should remember..."
+
+></textarea>
+
+<button
+
+class="btn primary"
+
+style="width:100%"
+
+onclick="addMemory()">
+
+Save memory
+
+</button>
+
+</div>
+
+<div
+
+id="memoryList"
+
+class="card">
+
+</div>
+
+</section>
+
+<!-- MEDIA -->
+
+<section id="media" class="view">
+
+<div class="top">
+
+<div class="brand">MEDIA LAB</div>
+
+<div class="hero">
+
+Images & short videos.
+
+</div>
+
+</div>
+
+<div class="card">
+
+<textarea
+
+id="prompt"
+
+class="field"
+
+rows="5"
+
+placeholder="Describe what you want to create..."
+
+></textarea>
+
+<div class="row">
+
+<button
+
+class="btn primary"
+
+onclick="generate('image')">
+
+🖼️ Image
+
+</button>
+
+<button
+
+class="btn accent"
+
+onclick="generate('video')">
+
+🎬 Video
+
+</button>
+
+</div>
+
+</div>
+
+<div
+
+id="mediaResult"
+
+class="media">
+
+<div>
+
+<div style="font-size:38px">
+
+✦
+
+</div>
+
+<div class="muted">
+
+Generated media will appear here.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SETTINGS -->
+
+<section id="settings" class="view">
+
+<div class="top">
+
+<div class="brand">SETTINGS</div>
+
+<div class="hero">
+
+MindForge AI
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="small">
+
+SECURITY
+
+</div>
+
+<p class="muted">
+
+Your API keys must stay on the server.
+
+Never put secret API keys inside this HTML file.
+
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="small">
+
+ABOUT
+
+</div>
+
+<p>
+
+MindForge AI
+
+</p>
+
+<p class="muted">
+
+Custom characters, conversation memory,
+
+AI chat, images and short videos.
+
+</p>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="tabs">
+
+<button
+
+class="tab active"
+
+data-v="chat">
+
+💬<br>
+
+Chat
+
+</button>
+
+<button
+
+class="tab"
+
+data-v="characters">
+
+🎭<br>
+
+Characters
+
+</button>
+
+<button
+
+class="tab"
+
+data-v="memory">
+
+🧠<br>
+
+Memory
+
+</button>
+
+<button
+
+class="tab"
+
+data-v="media">
+
+✨<br>
+
+Media
+
+</button>
+
+<button
+
+class="tab"
+
+data-v="settings">
+
+⚙️<br>
+
+Settings
+
+</button>
+
+</nav>
+
+<script>
+
+const KEY="mindforge-ai";
+
+let state=JSON.parse(
+
+  localStorage.getItem(KEY)||"null"
+
+);
+
+if(!state){
+
+state={
+
+characters:[
+
+{
+
+id:"nova",
+
+name:"Nova",
+
+avatar:"🤖",
+
+personality:
+
+"Friendly, creative, curious and direct."
+
+}
+
+],
+
+active:"nova",
+
+memories:{
+
+nova:[]
+
+},
+
+messages:{
+
+nova:[
+
+{
+
+role:"ai",
+
+text:
+
+"Hey. I’m Nova. Tell me what you want to build, imagine, or explore."
+
+}
+
+]
+
+}
+
+};
+
+save();
+
+}
+
+function save(){
+
+localStorage.setItem(
+
+KEY,
+
+JSON.stringify(state)
+
+);
+
+}
+
+function activeCharacter(){
+
+return state.characters.find(
+
+c=>c.id===state.active
+
+)||state.characters[0];
+
+}
+
+function escapeHTML(value){
+
+return String(value).replace(
+
+/[&<>"']/g,
+
+function(c){
+
+return {
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#39;"
+
+}[c];
+
+}
+
+);
+
+}
+
+function go(view){
+
+document
+
+.querySelectorAll(".view")
+
+.forEach(
+
+x=>x.classList.remove("active")
+
+);
+
+const target=document.getElementById(view);
+
+if(target){
+
+target.classList.add("active");
+
+}
+
+document
+
+.querySelectorAll(".tab")
+
+.forEach(
+
+x=>x.classList.toggle(
+
+"active",
+
+x.dataset.v===view
+
+)
+
+);
+
+if(view==="characters"){
+
+renderCharacters();
+
+}
+
+if(view==="memory"){
+
+renderMemory();
+
+}
+
+window.scrollTo(0,0);
+
+}
+
+document
+
+.querySelectorAll(".tab")
+
+.forEach(
+
+button=>{
+
+button.onclick=()=>{
+
+go(button.dataset.v);
+
+};
+
+}
+
+);
+
+function render(){
+
+const character=activeCharacter();
+
+document
+
+.getElementById("charName")
+
+.textContent=character.name;
+
+document
+
+.getElementById("charDesc")
+
+.textContent=character.personality;
+
+document
+
+.getElementById("avatar")
+
+.textContent=character.avatar;
+
+renderMessages();
+
+}
+
+function renderMessages(){
+
+const list=
+
+state.messages[state.active]||[];
+
+document
+
+.getElementById("messages")
+
+.innerHTML=list.map(
+
+message=>{
+
+const cls=
+
+message.role==="me"
+
+?"me"
+
+:"ai";
+
+return `
+
+<div class="msg ${cls}">
+
+${escapeHTML(message.text)}
+
+</div>
+
+`;
+
+}
+
+).join("");
+
+}
+
+async function send(){
+
+const input=
+
+document.getElementById("input");
+
+const text=
+
+input.value.trim();
+
+if(!text){
+
+return;
+
+}
+
+input.value="";
+
+if(!state.messages[state.active]){
+
+state.messages[state.active]=[];
+
+}
+
+state.messages[state.active].push({
+
+role:"me",
+
+text:text
+
+});
+
+save();
+
+renderMessages();
+
+try{
+
+const response=await fetch(
+
+"/api/chat",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+message:text,
+
+character:activeCharacter(),
+
+memory:
+
+state.memories[state.active]||[],
+
+history:
+
+state.messages[state.active].slice(-20)
+
+})
+
+}
+
+);
+
+if(!response.ok){
+
+throw new Error("API error");
+
+}
+
+const data=await response.json();
+
+state.messages[state.active].push({
+
+role:"ai",
+
+text:
+
+data.reply||
+
+"No reply was returned."
+
+});
+
+}
+
+catch(error){
+
+state.messages[state.active].push({
+
+role:"ai",
+
+text:
+
+"The secure AI backend is not connected yet. Your message has been saved locally."
+
+});
+
+}
+
+save();
+
+renderMessages();
+
+}
+
+function createCharacter(){
+
+const name=
+
+document
+
+.getElementById("cname")
+
+.value.trim();
+
+if(!name){
+
+return;
+
+}
+
+const id=
+
+(
+
+window.crypto &&
+
+crypto.randomUUID
+
+)
+
+?
+
+crypto.randomUUID()
+
+:
+
+String(Date.now());
+
+const avatar=
+
+document
+
+.getElementById("cavatar")
+
+.value.trim()
+
+||"🤖";
+
+const personality=
+
+document
+
+.getElementById("cpersonality")
+
+.value.trim()
+
+||"Friendly and helpful.";
+
+state.characters.push({
+
+id:id,
+
+name:name,
+
+avatar:avatar,
+
+personality:personality
+
+});
+
+state.memories[id]=[];
+
+state.messages[id]=[
+
+{
+
+role:"ai",
+
+text:
+
+`I’m ${name}. ${personality}`
+
+}
+
+];
+
+state.active=id;
+
+save();
+
+render();
+
+go("chat");
+
+document
+
+.getElementById("cname")
+
+.value="";
+
+document
+
+.getElementById("cavatar")
+
+.value="";
+
+document
+
+.getElementById("cpersonality")
+
+.value="";
+
+}
+
+function renderCharacters(){
+
+const container=
+
+document.getElementById("charList");
+
+container.innerHTML=
+
+state.characters.map(
+
+character=>`
+
+<div class="listitem">
+
+<div class="char">
+
+<div class="avatar">
+
+${escapeHTML(character.avatar)}
+
+</div>
+
+<div style="flex:1;min-width:0">
+
+<b>
+
+${escapeHTML(character.name)}
+
+</b>
+
+<div class="muted">
+
+${escapeHTML(character.personality)}
+
+</div>
+
+</div>
+
+<button
+
+class="btn"
+
+onclick="useCharacter('${character.id}')">
+
+${character.id===state.active
+
+?"Active"
+
+:"Use"}
+
+</button>
+
+</div>
+
+</div>
+
+`
+
+).join("");
+
+}
+
+function useCharacter(id){
+
+state.active=id;
+
+save();
+
+render();
+
+go("chat");
+
+}
+
+function addMemory(){
+
+const input=
+
+document
+
+.getElementById("memoryInput");
+
+const memory=
+
+input.value.trim();
+
+if(!memory){
+
+return;
+
+}
+
+if(!state.memories[state.active]){
+
+state.memories[state.active]=[];
+
+}
+
+state.memories[state.active].push(memory);
+
+input.value="";
+
+save();
+
+renderMemory();
+
+}
+
+function renderMemory(){
+
+const container=
+
+document.getElementById("memoryList");
+
+const memories=
+
+state.memories[state.active]||[];
+
+if(!memories.length){
+
+container.innerHTML=
+
+"<div class='muted'>No memories yet.</div>";
+
+return;
+
+}
+
+container.innerHTML=
+
+memories.map(
+
+(memory,index)=>`
+
+<div class="listitem">
+
+${escapeHTML(memory)}
+
+<button
+
+class="btn"
+
+style="float:right;padding:6px 9px"
+
+onclick="deleteMemory(${index})">
+
+Delete
+
+</button>
+
+</div>
+
+`
+
+).join("");
+
+}
+
+function deleteMemory(index){
+
+state.memories[state.active]
+
+.splice(index,1);
+
+save();
+
+renderMemory();
+
+}
+
+async function generate(type){
+
+const prompt=
+
+document
+
+.getElementById("prompt")
+
+.value.trim();
+
+if(!prompt){
+
+return;
+
+}
+
+const result=
+
+document.getElementById("mediaResult");
+
+result.innerHTML=
+
+"<div>Generating…</div>";
+
+try{
+
+const endpoint=
+
+type==="image"
+
+?"/api/image"
+
+:"/api/video";
+
+const response=await fetch(
+
+endpoint,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+prompt:prompt,
+
+character:activeCharacter(),
+
+duration:6
+
+})
+
+}
+
+);
+
+if(!response.ok){
+
+throw new Error("Generation error");
+
+}
+
+const data=
+
+await response.json();
+
+if(!data.url){
+
+throw new Error("No media URL");
+
+}
+
+if(type==="image"){
+
+result.innerHTML=`
+
+<img
+
+src="${escapeHTML(data.url)}"
+
+alt="Generated image"
+
+>
+
+`;
+
+}
+
+else{
+
+result.innerHTML=`
+
+<video
+
+src="${escapeHTML(data.url)}"
+
+controls
+
+playsinline>
+
+</video>
+
+`;
+
+}
+
+}
+
+catch(error){
+
+result.innerHTML=`
+
+<div>
+
+<div style="font-size:38px">
+
+${type==="image"?"🖼️":"🎬"}
+
+</div>
+
+<p>
+
+${type==="image"
+
+?"Image"
+
+:"Video"}
+
+generation is not connected yet.
+
+</p>
+
+<div class="status">
+
+The secure backend endpoint
+
+<code>/api/${type}</code>
+
+still needs to be deployed.
+
+</div>
+
+</div>
+
+`;
+
+}
+
+}
+
+render();
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker
+
+.register("sw.js")
+
+.catch(function(){});
+
+}
+
+</script>
+
+</body>
+
+</html>
